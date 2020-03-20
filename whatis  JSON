@@ -1,2 +1,8 @@
+key value pair example
 
+"name":"max"
+"lern":"devops"
 
+in aws example
+
+"Type":"AWS:ec2:SecurityGroup"
