@@ -6,3 +6,11 @@ key value pair example
 in aws example
 
 "Type":"AWS:ec2:SecurityGroup"
+
+
+example of comma
+
+"firstname":"max","secondname":"abc"
+
+AWS example
+"IPProtocol":"TCP","Formport":"443"
