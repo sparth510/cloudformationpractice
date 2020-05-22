@@ -1,0 +1,17 @@
+Parameters:
+  MyInstance:
+    Description: this is a MyInstance
+    Type: String
+    Default: t2.small
+    AllowedValues:
+        - t1.micro
+        - t2.nano
+        - t2.large
+        - t2.small
+    ConstraintDescription: must be a valid EC2 instance type.
+Resources:
+  MyEc2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: !Ref MyInstance
+      ImageId: "ami-a4c7edb2"

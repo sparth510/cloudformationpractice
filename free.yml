@@ -1,0 +1,48 @@
+Parameters:
+    DBUser:
+        Description: give the database username
+        Type: String
+        ConstraintDescription: this is database username
+    DBPwd:
+        NoEcho: true
+        Description: The database admin account password (won't be echoed)
+        Type: String
+    KeyName:
+        Description: Name of the ssh key / nither first create a ssh key then add
+        Type: AWS::EC2::KeyPair::KeyName
+        ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    DatabaseType:
+        Description: plase choose the DATABASE Name
+        Type: String
+        Default : MySQL
+        AllowedValues:
+            - PostgreSQL
+            - MariaDB
+            - Amazon Aurora
+Mappings:
+    AWSRegionArch2AMI:
+        us-east-1:
+            HVM64: ami-05d7ab19b28efa213
+        us-east-2:
+            HVM64: ami-0a5ee0336de62011b
+        us-west-1:
+            HVM64: ami-0f56279347d2fa43e
+        us-west-2:
+            HVM64: ami-003b90277095b7a42
+
+    Resources:
+        Instance:
+            Type: AWS::EC2::Instance
+            Properties: 
+                InstanceType: t2.micro
+                ImageId: !FindInMap [AWSRegionArch2AMI, !Ref 'AWS::Region', HVM64]
+                KeyName: !Ref KeyName
+        DATABASE:
+            Type: AWS::RDS::DBInstance
+            Properties:
+                DBInstanceClass: db.t2.micro
+                DBName: !Ref DatabaseType
+                MasterUsername: !Ref DBUser
+                MasterUserPassword: !Ref DBPwd
+    
+

@@ -1,0 +1,9 @@
+---
+Resources:
+    Mys3bucket:
+        Type: AWS::S3::Bucket
+        Properties: 
+            AccessControl: PublicRead
+            BucketName: vkjdnjns
+#ref : https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
+         
