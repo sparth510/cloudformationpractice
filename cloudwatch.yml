@@ -1,0 +1,58 @@
+Resources:
+    MyVPC:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: 10.0.0.0/16
+    Publicsubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: 10.0.1.0/24
+            VpcId: !Ref MyVPC
+    PrivateSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: 10.0.2.0/24
+            VpcId: !Ref MyVPC
+    RouteTab:
+        Type: AWS::EC2::RouteTable
+        Properties: 
+            VpcId: !Ref MyVPC
+    PublicROute:
+        Type: AWS::EC2::Route
+        Properties: 
+            RouteTableId: !Ref RouteTab
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref myInternetGateway
+    PRivateRouTab:
+        Type: AWS::EC2::RouteTable
+        Properties: 
+            VpcId: !Ref MyVPC
+    PrivateRoute:
+        Type: AWS::EC2::Route
+        Properties:
+            DestinationCidrBlock: 0.0.0.0/0
+            NatGatewayId: !Ref NAT
+            RouteTableId: !Ref PRivateRouTab
+    myInternetGateway:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+            Tags:
+                - Key: Name
+                  Value: abc
+    AttachGateway:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            VpcId: !Ref MyVPC
+            InternetGatewayId: !Ref myInternetGateway
+    NAT:
+        Type: AWS::EC2::NatGateway
+        Properties:
+            AllocationId:
+                Fn::GetAtt:
+                    - EIP
+                    - AllocationId
+            SubnetId: !Ref Publicsubnet
+    EIP:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain: MyVPC
